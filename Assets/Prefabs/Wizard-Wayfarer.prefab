@@ -11,7 +11,10 @@ GameObject:
   - component: {fileID: 1083881910302893967}
   - component: {fileID: 4664227994049481590}
   - component: {fileID: 5945907594212667451}
-  - component: {fileID: 7740425027018773031}
+  - component: {fileID: 339704601213483645}
+  - component: {fileID: 3922043046574886398}
+  - component: {fileID: 623623026457850857}
+  - component: {fileID: 3458661024629862515}
   m_Layer: 0
   m_Name: Wizard-Wayfarer
   m_TagString: Untagged
@@ -94,8 +97,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
+  m_UseAutoMass: 1
+  m_Mass: 1.7552645
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -104,7 +107,74 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &7740425027018773031
+--- !u!58 &339704601213483645
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7827208355384177620}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.027560472, y: 0.275663}
+  serializedVersion: 2
+  m_Radius: 0.38151148
+--- !u!58 &3922043046574886398
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7827208355384177620}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.14469256, y: -0.28600013}
+  serializedVersion: 2
+  m_Radius: 0.51593184
+--- !u!114 &623623026457850857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7827208355384177620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eef19be613da65c41a24cf2e8dbe4ff0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  jumpForce: 20
+  OnDead:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 623623026457850857}
+        m_MethodName: TeleportToStart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  checkOnGround: {fileID: 0}
+  checkRadius: 0.6
+  checkLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  boxCollider: {fileID: 3458661024629862515}
+  extraDis: 0.05
+--- !u!61 &3458661024629862515
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,7 +187,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.08032459, y: -0.20592612}
+  m_Offset: {x: -0.11024198, y: -0.5513262}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -128,5 +198,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.68323386, y: 1.2637883}
+  m_Size: {x: 0.7908767, y: 0.5838529}
   m_EdgeRadius: 0
