@@ -2,11 +2,12 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 public class MovePlayer : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public float jumpForce = 10f;
+    public float jumpForce = 15f;
     private Rigidbody2D rb;
     private float moveInput;
     public UnityEvent OnDead;
@@ -15,11 +16,9 @@ public class MovePlayer : MonoBehaviour
 
 
     private bool isGrounded = true;
-    //public Transform checkOnGround;
-    //public float checkRadius;
     public LayerMask checkLayer;
     public BoxCollider2D boxCollider;
-    public float extraDis = 0.02f;
+    public float extraDis = 0.1f;
 
 
     void Start()
@@ -28,6 +27,7 @@ public class MovePlayer : MonoBehaviour
         facingLeft = new Vector3(-Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
+
     }
 
     void FixedUpdate()
@@ -72,39 +72,44 @@ public class MovePlayer : MonoBehaviour
     }
     private void Jump()
     {
-        rb.AddForce(Vector2.up * 12, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
     private void IsGrounded()
     {
-        RaycastHit2D ray = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size - new Vector3(0,0), 0f, Vector2.down, extraDis, checkLayer);
+        //RaycastHit2D ray = Physics2D.BoxCast(boxCollider.bounds.center,
+        //    boxCollider.bounds.size * 0.9f, 0f, Vector2.down, extraDis, checkLayer);
+        RaycastHit2D ray1 = Physics2D.Raycast(new Vector2(boxCollider.bounds.min.x, boxCollider.bounds.min.y), Vector2.down, extraDis, checkLayer);
+        RaycastHit2D ray2 = Physics2D.Raycast(new Vector2(boxCollider.bounds.min.x + boxCollider.bounds.extents.x, boxCollider.bounds.min.y), Vector2.down, extraDis, checkLayer);
+        RaycastHit2D ray3 = Physics2D.Raycast(new Vector2(boxCollider.bounds.max.x, boxCollider.bounds.min.y), Vector2.down, extraDis, checkLayer);
+
+
+
         Color rayColor;
-        if (ray.collider != null)
+        if (ray1.collider != null || ray2.collider != null || ray3.collider != null)
         {
             rayColor = Color.green;
-            
+        }
+        else rayColor = Color.red;
+
+
+
+        Debug.DrawRay(new Vector2(boxCollider.bounds.min.x, boxCollider.bounds.min.y), Vector2.down *  extraDis, rayColor);
+        Debug.DrawRay(new Vector2(boxCollider.bounds.min.x + boxCollider.bounds.extents.x, boxCollider.bounds.min.y), Vector2.down * extraDis, rayColor);
+        Debug.DrawRay(new Vector2(boxCollider.bounds.max.x, boxCollider.bounds.min.y), Vector2.down * extraDis, rayColor);
+
+        //Debug.DrawRay(boxCollider.bounds.center, Vector2.down * (boxCollider.bounds.extents.y + extraDis), rayColor);
+        //Debug.DrawRay(boxCollider.bounds.center - new Vector3(boxCollider.bounds.extents.x, 0), Vector2.down * (boxCollider.bounds.extents.y + extraDis), rayColor);
+        //Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.x, 0), Vector2.down * (boxCollider.bounds.extents.y + extraDis), rayColor);
+        //Debug.DrawRay(boxCollider.bounds.center - new Vector3(boxCollider.bounds.extents.x, boxCollider.bounds.extents.y), Vector2.right * (boxCollider.bounds.size.x), rayColor);
+        //Debug.DrawRay(boxCollider.bounds.center - new Vector3(boxCollider.bounds.extents.x, boxCollider.bounds.extents.y + extraDis), Vector2.right * (boxCollider.bounds.size.x), rayColor);
+        //isGrounded = ray.collider != null;
+        if (ray1.collider != null || ray2.collider != null || ray3.collider != null )
+        {
+            isGrounded = true;
         }
         else
         {
-            rayColor = Color.red;
+            isGrounded = false;
         }
-        Debug.DrawRay(boxCollider.bounds.center, Vector2.down * (boxCollider.bounds.extents.y + extraDis), rayColor);
-        Debug.DrawRay(boxCollider.bounds.center - new Vector3(boxCollider.bounds.extents.x, 0), Vector2.down * (boxCollider.bounds.extents.y + extraDis), rayColor);
-        Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.x, 0), Vector2.down * (boxCollider.bounds.extents.y + extraDis), rayColor);
-        Debug.DrawRay(boxCollider.bounds.center - new Vector3(boxCollider.bounds.extents.x, boxCollider.bounds.extents.y), Vector2.right * (boxCollider.bounds.size.x), rayColor);
-        Debug.DrawRay(boxCollider.bounds.center - new Vector3(boxCollider.bounds.extents.x, boxCollider.bounds.extents.y + extraDis), Vector2.right * (boxCollider.bounds.size.x), rayColor);
-
-        Debug.Log(ray.collider);
-        isGrounded = ray.collider != null;
     }
-    //private void OnCollisionStay2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.tag == "Platform")
-    //    {
-    //        if (Input.GetKey(KeyCode.W))
-    //        {
-    //            Jump();
-    //        }
-    //    }
-    //}
-
 }

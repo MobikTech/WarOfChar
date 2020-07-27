@@ -49,6 +49,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -93,7 +94,7 @@ EdgeCollider2D:
   m_GameObject: {fileID: 3542328697892909454}
   m_Enabled: 0
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: b0c1b678c236d3a458467faef40bae59, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -112,6 +113,10 @@ EdgeCollider2D:
   - {x: 1.2849426, y: -0.89591646}
   - {x: 0.15986057, y: -1.0383368}
   - {x: -0.860533, y: -1.3326693}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
 --- !u!61 &1803661844683253638
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -121,7 +126,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 3542328697892909454}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: b0c1b678c236d3a458467faef40bae59, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -147,7 +152,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 3542328697892909454}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: b0c1b678c236d3a458467faef40bae59, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
