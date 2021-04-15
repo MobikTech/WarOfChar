@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public CapsuleCollider2D boxCollider;
     public float extraDis = 0.1f;
 
+    
     void Start()
     {
         facingRight = new Vector3(Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
