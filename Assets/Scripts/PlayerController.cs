@@ -3,10 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MoveMode
+{
+    OnGround,
+    OnWater,
+    OnLadder
+}
+
+//[RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
+    [Tooltip("Speed of player in space on all ways, if it implemented (except jumps)")]
+    [Range(0.0f, 50.0f)]
     public float moveSpeed = 10f;
+    [Tooltip("The force of player's jump")]
+    [Range(0.0f, 50.0f)]
     public float jumpForce = 10f;
+    public MoveMode moveMode;
+
     private GameObject spawner;
     private GameObject mainCamera;
     private Rigidbody2D rb;
@@ -19,22 +33,26 @@ public class PlayerController : MonoBehaviour
     public CapsuleCollider2D boxCollider;
     public float extraDis = 0.1f;
 
-    
+    private Animator animator;
+
+
+
     void Start()
     {
         facingRight = new Vector3(Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         facingLeft = new Vector3(-Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         spawner = GameObject.FindGameObjectWithTag("Respawn");
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        moveMode = MoveMode.OnGround;
         Respawn();
     }
 
     void Update()
     {
         //IsGrounded();
-
-        if (Input.GetKeyDown(KeyCode.W) && IsGrounded())
+        if (Input.GetKeyDown(KeyCode.W) && moveMode == MoveMode.OnGround && IsGrounded())
         {
             Jump();
         }
@@ -42,15 +60,39 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         #region Horizontal moving
-        moveInput = Input.GetAxis("Horizontal");
-        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
-        if (moveInput > 0) transform.localScale = facingRight;
-        else if (moveInput < 0) transform.localScale = facingLeft;
-
+        switch (moveMode)
+        {
+            case MoveMode.OnGround:
+                moveInput = Input.GetAxis("Horizontal");
+                rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+                if (moveInput > 0) transform.localScale = facingRight;
+                else if (moveInput < 0) transform.localScale = facingLeft;
+                break;
+            case MoveMode.OnWater:
+                if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, Input.GetAxisRaw("Vertical") * moveSpeed);
+                }
+                moveInput = Input.GetAxis("Horizontal");
+                rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+                if (moveInput > 0) transform.localScale = facingRight;
+                else if (moveInput < 0) transform.localScale = facingLeft;
+                break;
+            case MoveMode.OnLadder:
+                if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+                {
+                    moveInput = Input.GetAxis("Horizontal");
+                    rb.velocity = new Vector2(moveInput * moveSpeed, Input.GetAxisRaw("Vertical") * moveSpeed);
+                    if (moveInput > 0) transform.localScale = facingRight;
+                    else if (moveInput < 0) transform.localScale = facingLeft;
+                }
+                else rb.velocity = Vector2.zero;
+                break;
+        }
         #endregion
 
         #region Check on dead
-        if (transform.position.y < -7)
+        if (transform.position.y < -17)
         {
             Respawn();
         }
@@ -59,6 +101,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Jump()
     {
+        //animator.SetTrigger("Walk");
 
         rb.velocity = Vector2.zero;
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
